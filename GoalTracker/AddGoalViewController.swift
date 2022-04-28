@@ -14,10 +14,13 @@ class AddGoalViewController: UIViewController {
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var sliderValue: UILabel!
     
+    var didAddNewGoal: ((Goal) -> Void)?
+    
+    var coreData: CoreDataStack!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        sliderValue.text = "0"
     }
     
 
@@ -27,5 +30,21 @@ class AddGoalViewController: UIViewController {
     
     
     @IBAction func createButtonDidTapped(_ sender: Any) {
+        guard let goalTitle = titleTextField.text, !goalTitle.isEmpty else {
+            return
+        }
+        
+        guard let goalDesc = descTextView.text, !goalDesc.isEmpty else {
+            return
+        }
+        
+        let goal = Goal(context: coreData.viewContext)
+        goal.title = goalTitle
+        goal.currentProgress = 0
+        goal.desc = goalDesc
+        goal.totalProgress = Int64(slider.value)
+        coreData.save()
+        navigationController?.popViewController(animated: true)
+        didAddNewGoal?(goal)
     }
 }

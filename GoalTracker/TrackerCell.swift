@@ -16,17 +16,18 @@ final class TrackerCell: UITableViewCell {
     @IBOutlet weak var totalGoal: UILabel!
     @IBOutlet weak var currentGoal: UILabel!
     
-    var onTapGoalButton: (() -> Void)?
+    var addProgress: (() -> Void)?
+    var substractProgress: (() -> Void)?
     
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
     @IBAction private func substractGoal(_ sender: Any) {
-        
+        substractProgress?()
     }
     
     @IBAction private func addGoal(_ sender: Any) {
-        onTapGoalButton?()
+        addProgress?()
     }
 }
